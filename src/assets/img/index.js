@@ -1,0 +1,21 @@
+export const categoriesImages = {
+  'Art & Design': require('./categories/icon_pen.png'),
+  'Business': require('./categories/icon_shopping.png'),
+  'Ecology': require('./categories/icon_leaf.png'),
+  'Education': require('./categories/icon_container.png'),
+  'Fashion': require('./categories/icon_diamond.png'),
+  'Food & Drink': require('./categories/icon_cook.png'),
+  'Games': require('./categories/icon_game.png'),
+  'Health & Fitness': require('./categories/icon_round.png'),
+  'Movies & TV': require('./categories/icon_video.png'),
+  'Music': require('./categories/icon_music.png'),
+  'News & Media': require('./categories/icon_script.png'),
+  'Real Estate': require('./categories/icon_home.png'),
+  'Science': require('./categories/icon_atom.png'),
+  'Shopping': require('./categories/icon_cart.png'),
+  'Sports': require('./categories/icon_basketball.png'),
+  'Tech': require('./categories/icon_desktop.png'),
+  'Transport': require('./categories/icon_car.png'),
+  'Travel': require('./categories/icon_airplane.png'),
+};
+
