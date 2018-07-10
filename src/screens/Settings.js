@@ -1,6 +1,6 @@
 import React from 'react';
 import { bool, func } from 'prop-types';
-import { Text, SafeAreaView, View, TouchableOpacity, StyleSheet, StatusBar, Platform } from 'react-native';
+import { Text, SafeAreaView, View, TouchableOpacity, StyleSheet, StatusBar, Platform, AsyncStorage } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import EntypoIcon from 'react-native-vector-icons/dist/Entypo';
 import { sortBy } from 'lodash';
@@ -10,7 +10,6 @@ import Loader from '../components/Loader';
 import reviewNetwork from '../services/contracts/review-network';
 import { setLoadingAction } from '../redux/actions';
 import wallet from '../services/wallet';
-import web3 from '../services/web3';
 import surveyApi from '../services/surveys';
 
 const styles = StyleSheet.create({
@@ -83,31 +82,6 @@ class Settings extends React.Component {
     }
   );
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      accounts: {
-        '0xfBdc510dAfA85303180392e9D1D01eBA93C21fD8': '0x05ae87771b3cc9e00d80b4ad514051c2693bc9738ef7c164650c226912fc852e',
-        '0x277DcD1BB06F70A4Cf98D3A346779ADc2A7b77AD': '0x632a8f3d7e494f99fecf86fe48cfaa97dac2f53b797d7e50711e54d436c78415',
-      },
-      selectedAccount: wallet.getMyAddress(),
-    };
-  }
-
-  onChangeAccount(account) {
-    this.setState({ selectedAccount: account });
-    this.changeAccount(account);
-    this.props.navigation.pop();
-    this.props.navigation.navigate('Wallet');
-  }
-
-  changeAccount(address) {
-    wallet.setPrivateKey(this.state.accounts[address]);
-    const userWallet = web3.eth.accounts.privateKeyToAccount(this.state.accounts[address]);
-    web3.eth.defaultAccount = userWallet.address;
-    web3.eth.coinbase = userWallet.address;
-  }
-
   async loadSurveys(cb) {
     const { setLoadingAction: doSetLoadingAction } = this.props;
     doSetLoadingAction(true);
@@ -150,22 +124,9 @@ class Settings extends React.Component {
     });
   }
 
-  renderAccountOptions() {
-    return Object.keys(this.state.accounts).map(account => (
-      <TouchableOpacity
-        style={styles.accountWrapper}
-        key={account}
-        onPress={() => this.onChangeAccount(account)}
-      >
-        <Text
-          ellipsizeMode="tail"
-          numberOfLines={1}
-          style={{ fontSize: 14, color: account === this.state.selectedAccount ? '#7B55BA' : 'black' }}
-        >
-          {account}
-        </Text>
-      </TouchableOpacity>
-    ));
+  async signOut() {
+    await AsyncStorage.removeItem('savedAccount');
+    this.props.navigation.navigate('Auth');
   }
 
   render() {
@@ -179,8 +140,12 @@ class Settings extends React.Component {
         >
           <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
-        <Text style={styles.accountsTitle}>Accounts</Text>
-        {this.renderAccountOptions()}
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'red', marginTop: 30 }]}
+          onPress={() => this.signOut()}
+        >
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
     );
   }

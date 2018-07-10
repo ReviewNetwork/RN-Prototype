@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console, global-require, import/no-unresolved */
 
 import React from 'react';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, SwitchNavigator } from 'react-navigation';
 
 import Categories from '../components/Categories';
 import Wallet from '../screens/Wallet';
@@ -15,6 +15,7 @@ import Review from '../screens/Review';
 import Settings from '../screens/Settings';
 import SwitchHeader from '../components/SwitchHeader';
 import Tab from '../components/Tab';
+import Authentication from '../screens/Authentication';
 
 const ProfileStack = StackNavigator({
 
@@ -148,7 +149,10 @@ const Tabs = TabNavigator(
   },
 );
 
-const Root = StackNavigator({
+const Root = SwitchNavigator({
+  Auth: {
+    screen: Authentication,
+  },
   App: {
     screen: Tabs,
   },

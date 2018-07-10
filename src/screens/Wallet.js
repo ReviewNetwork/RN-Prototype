@@ -2,6 +2,7 @@ import React from 'react';
 import { bool, object, func, number } from 'prop-types';
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Web3 from '../services/web3';
 
 import EmptyState from '../components/EmptyState';
 
@@ -70,6 +71,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  ether: {
+    color: 'grey',
+    fontWeight: 'bold',
+  },
+
+  etherEmpty: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
+
 
 });
 
@@ -79,6 +90,7 @@ class WalletScreen extends React.Component {
 
     this.state = {
       surveys: [],
+      ether: 0,
     };
   }
 
@@ -108,6 +120,13 @@ class WalletScreen extends React.Component {
       doSetLoadingAction(false);
       this.setState({ surveys });
     });
+
+    this.setState({ether: await this.getEtherAmount()});
+  }
+
+  getEtherAmount = async () => {
+    const amount = await Web3.utils.fromWei(await Web3.eth.getBalance(wallet.getMyAddress()));
+    return amount;
   }
 
   async doLoadMyBalance() {
@@ -154,6 +173,7 @@ class WalletScreen extends React.Component {
           />
           <Text style={{ fontSize: 13 }}>{wallet.getMyAddress()}</Text>
           <Text style={{ fontSize: 25 }}>{myBalance} REW</Text>
+          <Text style={this.state.ether > 0 ? styles.ether : styles.etherEmpty}>+ {this.state.ether} ETH</Text>
         </View>
         <View style={{ padding: 20 }}>
           <TouchableOpacity

@@ -1,6 +1,6 @@
 # Review Network Mobile
 
-##### Mobile app for Review Network project, built with React Native for IOS.
+##### Mobile app for Review Network project, built with React Native for both Android and IOS.
 
 ## Requirements:
 
@@ -10,28 +10,11 @@
 * Xcode
 
 
-## Development:
-
-```
-git checkout develop
-
-yarn
-
-react-native run-ios --simulator="iPhone X"
-```
-
 ### Note
 
 If the Metro Bundler says something like "Can't require module undefined", just go to `node_modules/web3-eth-accounts/`, run `npm i` and re-run React Native. For some reason `web3-eth-accounts` didn't install all the node modules that were in its package.json.
 
 Here's a guide to setting up web3 with React Native - https://gist.github.com/dougbacelar/29e60920d8fa1982535247563eb63766
-
-### Note about React Native XHR
-
-You'll need to edit node_modules package manually. Add these changes:
-https://github.com/petarjs/react-native/commit/721b73b0af1feb0acaa86ae5b13b028e0063f6ec
-
-This is because React Native throws when a blob response is an empty string, and IPFS returns an empty string when you call /v0/add.
 
 ### Note Adding JSON to IPFS
 
@@ -41,7 +24,6 @@ This is because React Native throws when a blob response is an empty string, and
 - `cat categories.json | ipfs add`
 - Take the hash and put it in `config/ipfs.js`
 
-##### Note: It is recommended to use yarn as the package manager, to avoid some weird errors caused by npm...
 
 ## Deploying to Ropsten
 - truffle migrate --network ropsten --reset

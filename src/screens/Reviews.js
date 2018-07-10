@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, StatusBar, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, StatusBar, Platform, Dimensions } from 'react-native';
 import { CachedImage } from 'react-native-cached-image';
 import EntypoIcon from 'react-native-vector-icons/dist/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -150,12 +150,14 @@ class Reviews extends React.Component {
 
   render() {
     const { data } = this.props.navigation.state.params;
+    const { width } = Dimensions.get('window');
+    const height = width * 0.8;
     return (
       <ScrollView>
         <CachedImage
           style={{
-            height: 180,
-            width: 375,
+            height,
+            width,
           }}
           source={{ uri: data.images[0] }}
         />
